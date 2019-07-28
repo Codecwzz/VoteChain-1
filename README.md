@@ -48,6 +48,7 @@ We will build a decentralized system with each constituency as a node and there 
 All of the data (data of voters and candidates) will be asymmetrically encrypted and decrypted via RSA algorithm & stored in multiple systems & this will make it impossible to tamper our data.
 
 - **Vote authentication** - When a voter identifies themselves with a voter ID, it will verified against the local voter list in EVM, which is populated at the time of EVM initialisation. If the ID is present, a key-pair is generated for the voter, with the 'opening' private key stored against their name and the public key used to encrypt or 'seal' their vote choice. This choice along with additional Hashed biometric data is 'sealed' using public key and is then stored on the local ledger, ready to be sent to the central voting nodes.
+
 ![alt text](https://github.com/namanbiyani/VoteChain/blob/master/images/auth.png?raw=true)
 
 - **Vote Casting** - Chunk of votes is pushed to the delegated voting servers. These chunks are signed by the EVM with the key that was created during initialisation.
