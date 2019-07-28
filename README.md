@@ -3,8 +3,8 @@
 codefundo++ 2019
 ---
 ## Team three-musketeers
-College - **IIT Kanpur**
-Team members
+College - **IIT Kanpur** <br />
+Team members:-
 * [Nirmal Suthar](https://github.com/nirmal-suthar)
 * [Naman Biyani](https://github.com/namanbiyani)
 * [Sparsh Agarwal](https://github.com/sparshag21)
