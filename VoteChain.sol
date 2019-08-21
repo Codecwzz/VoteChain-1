@@ -1,6 +1,6 @@
 pragma solidity 0.4.25;
 
-contract Election {
+contract VoteChain {
 
     enum StateType {Setup, Voting, Result}
 
@@ -10,12 +10,13 @@ contract Election {
     struct Candidate {
         int id;
         string name;
+        string partyName;   //party name
         int voteCount;
     }
 
-    address public ElectionCommission;
+    address public EC;
     address public Voter;
-    // Store accounts that have voted
+    // This is to store accounts that have voted
     mapping(address => bool) public voters;
     // Store Candidates
     // Fetch Candidate
@@ -24,29 +25,23 @@ contract Election {
     int public CandidatesCount;
     string public winner;
     string public cname;
+    string public pname;
     int public candidateId;
     string public Title;
 
-
-/*
-    // voted event
-    event votedEvent (
-        uint indexed _candidateId
-    );
-*/
     constructor (string title) public {
         Title = title;
         CandidatesCount = -1;
-        AddCandidate("NOTA");
+        AddCandidate("NOTA","NA");
         State = StateType.Setup;
     }
 
     function vote (int candidateId) public {
         // require that they haven't voted before
-        require(!voters[msg.sender], "You have already voted before");
+        require(!voters[msg.sender], "You can only vote once!");
 
         // require a valid candidate
-        require(candidateId > 0 && candidateId <= CandidatesCount, "Invalid Candidate");
+        require(candidateId > 0 && candidateId <= CandidatesCount, "Candidate not in list");
 
         // record that voter has voted
         voters[msg.sender] = true;
@@ -59,12 +54,12 @@ contract Election {
         State = StateType.Voting;
     }
 
-    function AddCandidate (string cname) public {
+    function AddCandidate (string cname, string pname) public {
         CandidatesCount ++;
-        candidates[CandidatesCount] = Candidate(CandidatesCount, cname, 0);
+        candidates[CandidatesCount] = Candidate(CandidatesCount, cname, pname, 0);
     }
 
-    function rescalc () public {
+    function resultCalc () public {
         int mx = 0;
         for (int i = 0; i <= CandidatesCount; i++){
             if (candidates[i].voteCount > mx){

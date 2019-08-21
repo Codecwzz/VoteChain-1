@@ -1,39 +1,39 @@
 {
-    "ApplicationName": "Election",
-    "DisplayName": "Election",
-    "Description": "Allows voters to vote securely for the candidate of their choice.",
+    "ApplicationName": "VoteChain",
+    "DisplayName": "VoteChain",
+    "Description": "A secure Voting App powered by Blockchain Technology. ",
     "ApplicationRoles": [
       {
-        "Name": "ElectionCommission",
-        "Description": "Organisation which administers the election process."
+        "Name": "EC",
+        "Description": "Election Commission handles all the voting procedures."
       },
       {
         "Name": "Voter",
-        "Description": "User who can vote."
+        "Description": "All registered users above the age of 18."
       }
     ],
     "Workflows": [
       {
-        "Name": "Election",
-        "DisplayName": "Election",
-        "Description": "Handles the Voting process",
-        "Initiators": [ "ElectionCommission" ],
+        "Name": "VoteChain",
+        "DisplayName": "VoteChain",
+        "Description": "Handles the voting procedures.",
+        "Initiators": [ "EC" ],
         "StartState":  "Setup",
         "Properties": [
           {
             "Name": "State",
             "DisplayName": "State",
-            "Description": "Holds the state of the contract",
+            "Description": "Represents the current state of the election process.",
             "Type": {
               "Name": "state"
             }
           },
           {
-            "Name": "ElectionCommission",
+            "Name": "EC",
             "DisplayName": "Election Commission",
             "Description": "...",
             "Type": {
-              "Name": "ElectionCommission"
+              "Name": "EC"
             }
           },
           {
@@ -59,22 +59,29 @@
             }
           },
           {
+            "Name": "pname",
+            "DisplayName": "Party name",
+            "Type": {
+              "Name": "string"
+            }
+          },
+          {
             "Name": "candidateId",
-            "DisplayName": "Candidate ID",
+            "DisplayName": "ID of the Candidate",
             "Type": {
               "Name": "int"
             }
           },
           {
             "Name": "winner",
-            "DisplayName": "Winner Of the Election",
+            "DisplayName": "The Candidate with the majority.",
             "Type": {
               "Name": "string"
             }
           },
           {
             "Name": "Title",
-            "DisplayName": "Title Of Election",
+            "DisplayName": "Election Title",
             "Type": {
               "Name": "string"
             }
@@ -83,8 +90,8 @@
         "Constructor": {
           "Parameters": [{
             "Name": "title",
-            "Description": "Title of the Election",
-            "DisplayName": "Title of Election",
+            "Description": "Election Title",
+            "DisplayName": "Election Title",
             "Type": {
               "Name": "string"
             }
@@ -94,15 +101,23 @@
           {
             "Name": "AddCandidate",
             "DisplayName": "Add Candidate",
-            "Description": "Add a Candidate contesting for the Election",
+            "Description": "Add a new Candidate contesting for the Election",
             "Parameters": [
               {
                 "Name": "cname",
-                "Description": "Name of the Candidate",
+                "Description": "Candidate Name",
                 "DisplayName": "Name",
                 "Type": {
                   "Name": "string"
                 }
+              },
+              {
+                  "Name": "pname",
+                  "Description": "Party Name",
+                  "DisplayName": "Name",
+                  "Type": {
+                    "Name": "string"
+                  }
               }
             ]
           },
@@ -121,15 +136,15 @@
           }]
           },
           {
-            "Name": "rescalc",
-            "DisplayName": "Calculate Results",
-            "Description": "Shows who won the election",
+            "Name": "resultCalc",
+            "DisplayName": "Show Results",
+            "Description": "Shows the winner of the election, i.e, the candidate with the majority",
             "Parameters": []
           },
           {
             "Name": "AllowVoting",
             "DisplayName": "Start Voting Period",
-            "Description": "Start the voting period and allow the voters to vote",
+            "Description": "The voting period begins and the voters are allowed to vote.",
             "Parameters": []
           }
         ],
@@ -137,21 +152,21 @@
           {
             "Name": "Setup",
             "DisplayName": "Setup",
-            "Description": "Setting Up Candidates",
+            "Description": "Setup Candidates",
             "PercentComplete": 20,
             "Style": "Success",
             "Transitions": [
               {
-                "AllowedRoles": ["ElectionCommission"],
-                "AllowedInstanceRoles": ["ElectionCommission"],
-                "DisplayName": "Add Candidates",
+                "AllowedRoles": ["EC"],
+                "AllowedInstanceRoles": ["EC"],
+                "DisplayName": "Add a Candidates",
                 "Function": "AddCandidate",
                 "NextStates": ["Setup"]
               },
               {
-                "AllowedRoles": ["ElectionCommission"],
-                "AllowedInstanceRoles": ["ElectionCommission"],
-                "DisplayName": "Start Voting Period",
+                "AllowedRoles": ["EC"],
+                "AllowedInstanceRoles": ["EC"],
+                "DisplayName": "Start voting period",
                 "Function": "AllowVoting",
                 "NextStates": ["Voting"]
               }
@@ -160,15 +175,15 @@
           {
             "Name": "Voting",
             "DisplayName": "Voting",
-            "Description": "Vote for your Candidate",
+            "Description": "Start Voting",
             "PercentComplete": 60,
             "Style": "Success",
             "Transitions": [
               {
-              "AllowedRoles": ["ElectionCommission"],
-              "AllowedInstanceRoles": ["ElectionCommission"],
+              "AllowedRoles": ["EC"],
+              "AllowedInstanceRoles": ["EC"],
               "DisplayName": "Results",
-              "Function": "rescalc",
+              "Function": "resultCalc",
               "NextStates": ["Result"]
             },
             {
@@ -183,7 +198,7 @@
           {
             "Name": "Result",
             "DisplayName": "Results",
-            "Description": "See the Results",
+            "Description": "Shows Result",
             "PercentComplete": 100,
             "Style": "Success",
             "Transitions": []
